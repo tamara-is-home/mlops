@@ -6,9 +6,9 @@ import os
 warnings.filterwarnings('ignore')
 
 
-def predict(path_to_image: str, model: str = 'resnet34'):
+def predict(path_to_image: str):
 
-    learn = load_learner(path=f'./models/{model}.pkl')
+    learn = load_learner(path=f'./models/')
     img = open_image(path_to_image)
 
     pred_class, pred_idx, outputs = learn.predict(img)
@@ -19,4 +19,4 @@ def predict(path_to_image: str, model: str = 'resnet34'):
 
 
 if __name__ == '__main__':
-    predict('data/test/Abyssinian_138.jpg')
+    predict('images/test/Abyssinian_1.jpg')

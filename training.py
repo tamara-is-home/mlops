@@ -20,7 +20,7 @@ def train(batch_size:int=16, model=models.resnet34, metric=error_rate, data_size
 
     name = model.__name__
     learn.save(name)
-    learn.export(f'models/{name}.pkl')
+    learn.export(f'models/export.pkl')
 
 
 if __name__ == '__main__':
