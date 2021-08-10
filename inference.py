@@ -6,7 +6,7 @@ import os
 warnings.filterwarnings('ignore')
 
 
-def predict(path_to_image: str, model: str = 'restnet34'):
+def predict(path_to_image: str, model: str = 'resnet34'):
 
     learn = load_learner(path=f'./models/{model}.pkl')
     img = open_image(path_to_image)

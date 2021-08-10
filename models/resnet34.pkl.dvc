@@ -1,0 +1,4 @@
+outs:
+- md5: fb0673824873b9355def146c2acdc4db
+  size: 87502449
+  path: resnet34.pkl
