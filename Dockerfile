@@ -5,7 +5,7 @@ WORKDIR /app
 RUN mkdir ./images
 RUN mkdir ./models
 
-COPY test* ./images
+COPY images/test/* ./images
 COPY models/* ./models
 COPY inference.py ./
 COPY rest_api.py ./
