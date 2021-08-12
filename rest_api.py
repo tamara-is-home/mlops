@@ -10,6 +10,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 UPLOAD_FOLDER = 'images/test/'
 
+
 @app.get("/", response_class=HTMLResponse)
 def home_page():
     return templates.TemplateResponse("index.html")
@@ -31,4 +32,4 @@ async def predict_form(request: Request, file: UploadFile = File(...)):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app)
+    uvicorn.run(app, host='0.0.0.0')
