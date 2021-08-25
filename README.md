@@ -53,7 +53,11 @@ prints which are present there of course). CloudBuild is also included in valida
 on the building step after the trigger (after push to repo).
  I did not integrated TensorBoard, unfortunately.
 
-6. Please note that most of these tasks I was doing together with Volodymyr Prypeshnyuk in live on-call mode 
+6. Honestly speaking, the design of project is not too well. It would be much more confident to have 2 repos:
+one for the main code with dockerfile and cloudbuild and one with all Airflow stuff. However, as I got no more
+access to GCP there's no reason to change it now. 
+
+7. Please note that most of these tasks I was doing together with Volodymyr Prypeshnyuk in live on-call mode 
 (I've already informed you about that on last study session, just fyi) 
 I remember your concerns regarding that splitting job here is not right approach and I must ensure you that it didnt take place here.
 
