@@ -1,6 +1,6 @@
 from airflow import models
 from airflow.operators.python_operator import PythonOperator
-from airflow.operators.docker_operator import DockerOperator
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.contrib.sensors.gcs_sensor import GoogleCloudStoragePrefixSensor
 from airflow.contrib.operators.gcs_delete_operator import GoogleCloudStorageDeleteOperator
 from pathlib import Path
@@ -34,21 +34,21 @@ with models.DAG(dag_name,
         name = f'retrain_model',
         python_callable = retrainer
     )
-    image_transfer >> image_predictor
-    model_retrain
 
-"""    docker = DockerOperator(
-        dag=dag,
-        task_id = 'docker_command',
-        image = 'centos:latest',
-        api_version = 'auto',
-        auto_remove = True,
-        environment = {
-            'AF_EXECUTION_DATE': "{{ ds }}",
-            'AF_OWNER': "{{ task.owner }}"
-        },
-        command = '/bin/bash -c \'echo "TASK ID (from macros): {{ task.task_id }} - EXECUTION DATE (from env vars): $AF_EXECUTION_DATE"\'',
-        docker_url = 'unix://var/run/docker.sock',
-        network_mode = 'bridge'
-    )"""
+    model_deploy = KubernetesPodOperator(
+        task_id = f'deploy_model',
+        name = f'deploy_model',
+        cmds=['python', "rest_api.py"],
+        namespace='default',
+        image='gcr.io/bold-hope-322611/mlops:dev',
+        resourses={'limit_cpu': 0.5},
+        image_pull_policy='Always',
+        is_delete_operator_pod=False,
+        retries=2,
+        startup_timeout_seconds=300,
+    )
+
+    image_transfer >> image_predictor >> model_retrain >> model_deploy
+
+
 

@@ -82,7 +82,6 @@ def retrainer(model='resnet34'):
     for i in storage_client.list_blobs("animals_to_predict"):
         i.download_to_filename(path_img + i.name.split('/')[-1])
 
-    #1. take data from bucket("i")
     fnames = get_image_files(path_img)
     np.random.seed(42)
     pat = r'/([^/]+)_\d+.jpg$'
@@ -90,10 +89,8 @@ def retrainer(model='resnet34'):
     print('creating dataset...')
     data = ImageDataBunch.from_name_re(path_img, fnames, pat, ds_tfms=get_transforms(), size=224,
                                        bs=batch_size).normalize(imagenet_stats)
-    #2. retrain model
     learn = load_learner(path='model/model.pkl')
     train(data, learn)
 
-    #3. replace old model with new one, old model lies in dags/utils/model/
     os.replace("../../data/models/export.pkl", "model/model.pkl")
     print('Retrain: Done.')

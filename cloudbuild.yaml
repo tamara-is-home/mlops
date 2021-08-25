@@ -1,0 +1,40 @@
+steps:
+  - name: gcr.io/cloud-builders/git
+    entrypoint: /bin/bash
+    args:
+      - '-eEuo'
+
+      - 'pipefail'
+
+      - '-c'
+
+      - |-
+
+        echo "gcr.io/${PROJECT_ID}/mlops:$SHORT_SHA" > _IMAGE_
+        echo "$BRANCH_NAME" | sed -r 's/\//_/g' > _BRANCH_NAME_
+
+  - id: 'build operator image'
+    entrypoint: 'bash'
+    name: gcr.io/cloud-builders/docker
+    args: ['-c', 'docker build . -t gcr.io/${PROJECT_ID}/mlops:$SHORT_SHA']
+
+
+  - id: 'publish operator image'
+    name: gcr.io/cloud-builders/docker
+    args: [ 'push', 'gcr.io/${PROJECT_ID}/mlops:$SHORT_SHA' ]
+
+  - id: 'tag operator image'
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+
+      - '-exEuo'
+
+      - 'pipefail'
+
+      - '-c'
+
+      - |-
+
+        gcloud container images -q add-tag $(cat _IMAGE_) "gcr.io/${PROJECT_ID}/mlops:$(cat _BRANCH_NAME_)"
+        gcloud container images -q add-tag $(cat _IMAGE_) "gcr.io/${PROJECT_ID}/mlops:$TAG_NAME"
