@@ -59,7 +59,8 @@ access to GCP there's no reason to change it now.
 
 7. Please note that most of these tasks I was doing together with Volodymyr Prypeshnyuk in live on-call mode 
 (I've already informed you about that on last study session, just fyi) 
-I remember your concerns regarding that splitting job here is not right approach and I must ensure you that it didnt take place here.
+I remember your concerns regarding that splitting job here is not right approach and I must ensure you that it didnt take place here,
+each of us was doing all the tasks.
 
 
     
